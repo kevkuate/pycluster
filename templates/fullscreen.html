@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="cache-control" content="public">
+        <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Visualization of cleaning pipeline results">
+        <meta name="author"      content="Saulo Aflitos">
+        <title>Cleaning Pipeline</title>
+    </head>
+
+
+    <body>
+        {% if srcType == 'json' %}
+        <div id='graphDiv' style='
+            top       : 0px;
+            left      : 0px;
+            width     : auto;
+            height    : auto;
+            position  : fixed;
+            padding   : 16px;
+            z-index   : 100;
+            display   : inline'>
+        </div>
+
+        <footer>
+            <!-- Le styles -->
+            <!-- JQUERY    -->
+            <!--<link href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css"                  rel="stylesheet" />-->
+
+
+            <!-- Le javascript
+            ================================================== -->
+            <!-- JQUERY -->
+            <script type="application/javascript" src="{{ url_for('static', filename='js/jquery1.9.1/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js'               ) }}"></script>
+
+            <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+                <!--<script type="application/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
+                <!--<script type="application/javascript" src="{{ url_for('static', filename='js/html5shiv/dist/html5shiv.js') }}"></script>-->
+            <!--[if lt IE 9]>
+                <script type="application/javascript" src="{{ url_for('static', filename='js/html5shiv/dist/html5shiv-printshiv.js') }}"></script>
+            <![endif]-->
+
+
+
+            <!-- GRAPHIC LIBRARIES       -->
+            <!-- GRAPHIC - HIGH CHARTS -->
+            <script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/highcharts.js'     ) }}"></script>
+            <script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/highcharts-more.js') }}"></script>
+            <script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/exporting.js'      ) }}"></script>
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/candle.js'         ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/lines.js'          ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/stacked.js'        ) }}"></script>-->
+            <script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/graphs.js'         ) }}"></script>
+            <!-- IGNORE       -->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/highstock.js'      ) }}"></script>-->
+
+
+
+            <!-- GRAPHIC - FLOT -->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/excanvas.min.js'           ) }}"></script>-->
+            <!--[if lte IE 8]>
+            <![endif]-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/jquery.flot.js'            ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/jquery.flot.fillbetween.js') }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/jquery.flot.axislabels.js' ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/jquery.flot.categories.js' ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/jquery.flot.stack.js'      ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/flot.graphs.js'            ) }}"></script>-->
+
+
+
+            <script type="application/javascript" src="{{ url_for('static', filename='js/custom.js'                            ) }}"></script>
+
+
+            <!-- Le fav and touch icons -->
+            <link rel="shortcut icon"                                href="{{ url_for('static', filename='ico/favicon.ico'                         ) }}">
+
+            <script type="application/javascript" >
+                $(document).ready(function(){
+                    //SHOW JSON IMAGES
+                        $("#graphDiv").html('');
+                        var href = "{{ downloadLnk|safe }}";
+                        console.log('getting '+href);
+                        $.getJSON(href, graph_caller);
+                        var $divGraph = $("#graphDiv");
+
+                        $divGraph.css('width' , $(window).width()  * .9);
+                        $divGraph.css('height', $(window).height() * .9);
+                        $divGraph.show();
+                });
+
+
+                function graph_caller(dataHash){
+                    //console.log('calling graph');
+
+                    var dst                = dataHash['_dst_func'];
+                    //console.log('calling graph :: dst: ' + dst);
+
+                    var fn                 = window[dst];
+                    //console.log('calling graph :: fn: ' + fn);
+
+                    dataHash['container'] = 'graphDiv';
+
+                    //console.log('calling graph :: container: ' + $('divImg'));
+
+                    fn(dataHash);
+                 }
+            </script>
+        </footer>
+        {% else  %}
+
+        <img src="{{ downloadLnk|safe }}"/>
+
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,113 @@
+        <footer>
+            <!-- Le styles -->
+            <!-- JQUERY    -->
+            <link href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css"                  rel="stylesheet" />
+            <link href="{{ url_for('static', filename='css/bootstrap/bootstrap.css')            }}" rel="stylesheet" />
+            <link href="{{ url_for('static', filename='css/bootstrap/bootstrap-responsive.css') }}" rel="stylesheet" />
+
+
+
+            <!-- Le javascript
+            ================================================== -->
+            <!-- JQUERY -->
+            <!--<script type="application/javascript" src="http://code.jquery.com/jquery-1.8.2.js"      ></script>-->
+            <!--<script type="application/javascript" src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/jquery1.9.1/jquery-1.9.1.min.js'                                      ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/jquery1.7.2/jquery.ui.touch-punch.min.js') }}"></script>-->
+            <script type="application/javascript" src="{{ url_for('static', filename='js/jquery1.9.1/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js'               ) }}"></script>
+            <script type="application/javascript" src="{{ url_for('static', filename='js/jquery1.9.1/jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.min.js') }}"></script>
+            <script type="application/javascript" src="{{ url_for('static', filename='js/jquery1.9.1/jquery.ui.touch-punch.min.js'                             ) }}"></script>
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/jquery1.9.1/jquery.mjs.nestedSortable.js'                             ) }}"></script>-->
+
+
+            <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+                <!--<script type="application/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>-->
+                <!--<script type="application/javascript" src="{{ url_for('static', filename='js/html5shiv/dist/html5shiv.js') }}"></script>-->
+            <!--[if lt IE 9]>
+                <script type="application/javascript" src="{{ url_for('static', filename='js/html5shiv/dist/html5shiv-printshiv.js') }}"></script>
+            <![endif]-->
+
+
+
+            <!-- Placed at the end of the document so the pages load faster -->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-transition.js'  ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-alert.js'       ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-modal.js'       ) }}"></script>-->
+            <script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-dropdown.js'    ) }}"></script>
+            <script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-scrollspy.js'   ) }}"></script>
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-tab.js'         ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-tooltip.js'     ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-popover.js'     ) }}"></script>-->
+            <script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-button.js'      ) }}"></script>
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-collapse.js'    ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-carousel.js'    ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap-typeahead.js'   ) }}"></script>-->
+
+            <script type="application/javascript" src="{{ url_for('static', filename='js/json2.js'                           ) }}"></script>
+
+
+
+
+            <!-- GRAPHIC LIBRARIES       -->
+            <!-- GRAPHIC - HIGH CHARTS -->
+            <script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/highcharts.js'     ) }}"></script>
+            <script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/highcharts-more.js') }}"></script>
+            <script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/exporting.js'      ) }}"></script>
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/candle.js'         ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/lines.js'          ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/stacked.js'        ) }}"></script>-->
+            <script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/graphs.js'         ) }}"></script>
+            <!-- IGNORE       -->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/highcharts/highstock.js'      ) }}"></script>-->
+
+
+
+            <!-- GRAPHIC - FLOT -->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/excanvas.min.js'           ) }}"></script>-->
+            <!--[if lte IE 8]>
+            <![endif]-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/jquery.flot.js'            ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/jquery.flot.fillbetween.js') }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/jquery.flot.axislabels.js' ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/jquery.flot.categories.js' ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/jquery.flot.stack.js'      ) }}"></script>-->
+            <!--<script type="application/javascript" src="{{ url_for('static', filename='js/graph/flot/flot.graphs.js'            ) }}"></script>-->
+
+
+
+            <script type="application/javascript" >
+                window.url_for_query = "{{ url_for('query'    ) }}";
+                window.url_for_setup = "{{ url_for('configure') }}";
+            </script>
+            <script type="application/javascript" src="{{ url_for('static', filename='js/custom.js'                            ) }}"></script>
+
+
+            <!-- Le fav and touch icons -->
+            <link rel="shortcut icon"                                href="{{ url_for('static', filename='ico/favicon.ico'                         ) }}">
+            <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url_for('static', filename='ico/apple-touch-icon-144-precomposed.png') }}">
+            <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ url_for('static', filename='ico/apple-touch-icon-114-precomposed.png') }}">
+            <link rel="apple-touch-icon-precomposed" sizes="72x72"   href="{{ url_for('static', filename='ico/apple-touch-icon-72-precomposed.png' ) }}">
+            <link rel="apple-touch-icon-precomposed"                 href="{{ url_for('static', filename='ico/apple-touch-icon-57-precomposed.png' ) }}">
+
+
+            <hr/>
+            <hr/>
+            <p class="pull-right">Saulo Aflitos<img src="https://en.gravatar.com/userimage/12694696/37d98621b01a5db519a0ca06829d3870.jpeg" class="srcicon" /><a href="http://nl.linkedin.com/in/sauloaflitos" title="LinkedIn Profile"><img src="http://developer.linkedin.com/sites/default/files/LinkedIn_Logo60px.png" class="srcicon" /></a> 2012-2013</p>
+            <br/>
+            <hr/>
+            <p class="pull-right"> Created using
+                                                <a href="http://www.python.org/"             title="Python"    ><img src="http://www.python.org/community/logos/python-powered-w-100x40.png"                    class="srcicon" alt="Python"    /></a>
+                                                <a href="http://flask.pocoo.org/"            title="Flask"     ><img src="http://flask.pocoo.org/static/logo/flask.png"                                         class="srcicon" alt="Flask"     /></a>
+                                                <a href="http://jinja.pocoo.org/"            title="Jinja"     ><img src="http://jinja.pocoo.org/static/jinja.png"                                              class="srcicon" alt="Jinja"     /></a>
+                                                <a href="http://werkzeug.pocoo.org/"         title="Werkzeug"  ><img src="http://werkzeug.pocoo.org/static/werkzeug.png"                                        class="srcicon" alt="Werkzeug"  /></a>
+                                                <a href="http://www.highcharts.com/"         title="HighCharts"><img src="http://api.highcharts.com/resources/images/Highcharts-icon-160px.png"                 class="srcicon" alt="HighCharts"/></a>
+                                                <a href="http://en.wikipedia.org/wiki/HTML5" title="HTML5"     ><img src="http://www.w3.org/html/logo/downloads/HTML5_Logo_256.png"                             class="srcicon" alt="HTML5"     /></a>
+                                                <a href="http://jquery.com/"                 title="Jquery"    ><img src="http://jquery.org/wp-content/uploads/2010/01/JQuery_logo_color_onwhite-300x74.png"    class="srcicon" alt="Jquery"    /></a>
+                                                <a href="http://jqueryui.com/"               title="Jquery UI" ><img src="http://jquery.org/wp-content/uploads/2010/01/JQuery_UI_logo_color_onwhite-300x72.png" class="srcicon" alt="Jquery UI" /></a>
+                                                <a href="https://pypi.python.org/pypi/simplejson/">SimpleJson</a>,
+                                                <a href="https://github.com/jsonpickle/jsonpickle">JsonPickle</a>,
+                                                <a href="http://twitter.github.com/bootstrap/">Bootstrap</a>,
+                                                <a href="https://github.com/douglascrockford/JSON-js">Json.js</a>,
+                                                <a href="https://code.google.com/p/html5shim/">HTML5shim</a>
+            </p>
+        </footer>

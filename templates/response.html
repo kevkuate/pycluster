@@ -1,0 +1,240 @@
+{% if projectName != None and projectName in g.structure %}
+    {% set projectData = g.structure[projectName] -%}
+
+    <h2>{{ projectName.upper() }}</h2>
+
+
+    {% for projectStatus in g.structure[projectName] -%}
+        <div class="statusDiv" id="projectStatus{{ projectStatus }}">
+            <h3>{{ projectStatus.capitalize() }}</h3>
+            <table class="table table-condensed tableContent">
+                <thead class="header">
+                    <tr>
+                        <th col="colCount1">Sample</th>
+                        <th col="colCount2">Tech</th>
+                        <th col="colCount3">Library</th>
+                        <th col="colCount4">FileName</th>
+                        {% set colCount = [] %}
+                        {% for pluginName in g.plugins if checkPlugin(pluginName) -%}
+                            {% set pluginNameShort = pluginName.replace("-", "").replace("_", "").replace(".", "") -%}
+                            <th col="colCount{{ length(colCount) + 5 }}">{{ converterPlugin(pluginName) }} <i class="icon-chevron-left icon-white" tgt="{{ pluginNameShort }}"></i></th>
+
+                            {% do colCount.append(1) %}
+                            {% for pluginKey in g.plugins[pluginName] if checkPluginKey(pluginName, pluginKey) -%}
+                                <th class="{{pluginNameShort}}" col="colCount{{ length(colCount) + 5 }}">{{ converterKey(pluginName, pluginKey) }}</th>
+                                {% do colCount.append(1) %}
+                            {% endfor -%}
+                        {% endfor -%}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% set lineCount   = []                                           -%}
+                    {% set samples     = g.structure[projectName][projectStatus]      -%}
+                    {% set samplesKeys = samples.keys()                               -%}
+                    {% do samplesKeys.sort()                                          -%}
+
+
+                    {% for projectSample in samplesKeys | sort if ( projectSample != none ) -%}
+                        {% for sequenceTech in samples[projectSample] | sort if sequenceTech != none -%}
+                            {% for libraryName in samples[projectSample][sequenceTech] | sort if libraryName != none -%}
+                                {% for fileName in samples[projectSample][sequenceTech][libraryName] | sort if fileName != none -%}
+                                    {% set data     = samples[projectSample][sequenceTech][libraryName][fileName] -%}
+                                    {% for pluginName in g.plugins | sort if checkPlugin(pluginName) -%}
+                                        {% for pluginKey in g.plugins[pluginName] | sort if checkPluginKey(pluginName, pluginKey) -%}
+                                            {% set pluginValue = data.getPluginResult(pluginName, pluginKey) -%}
+                                            {% do stats(name=projectName, status=projectStatus, sample=projectSample, tech=sequenceTech, lib=libraryName, plugin=pluginName, key=pluginKey, value=pluginValue) -%}
+                                        {% endfor -%}
+                                    {% endfor -%}
+                                {% endfor -%}
+                            {% endfor -%}
+                        {% endfor -%}
+                    {% endfor -%}
+
+
+
+
+
+                    <tr class="dataline summaryStatus" id="lineCount{{ length(lineCount) }}">
+                        <td class="dataCol" col="colCount1"><h5>{{ projectName.upper() }} - {{ projectStatus.capitalize() }}</h5></td>
+                        <td class="dataCol" col="colCount2"></td>
+                        <td class="dataCol" col="colCount3"></td>
+                        <td class="dataCol" col="colCount4"></td>
+                        {% set colCount = [] -%}
+                        {% for pluginName in g.plugins if checkPlugin(pluginName) -%}
+                        <td class="dataCol" col="colCount{{ length(colCount) + 5 }}">{{ converterPlugin(pluginName) }}</td>
+                            {% set pluginNameShort = pluginName.replace("-", "").replace("_", "").replace(".", "") -%}
+
+                            {% do colCount.append(1) -%}
+
+                            {% for pluginKey in g.plugins[pluginName] if checkPluginKey(pluginName, pluginKey) -%}
+                                <td class="{{ pluginNameShort }} dataCol" col="colCount{{ length(colCount) + 5 }}">
+                                    {% set statValue = stats(name=projectName, status=projectStatus, plugin=pluginName, key=pluginKey) -%}
+                                    {{ converterValue(projectName, None, None, None, None, None, pluginName, pluginKey, statValue)|safe }}
+                                </td>
+                                {% do colCount.append(1) -%}
+                            {% endfor -%}
+                        {% endfor -%}
+                    </tr>
+
+
+
+
+
+                    {% for projectSample in samplesKeys | sort if projectSample != none -%}
+                        {% set technologies     = samples[projectSample] -%}
+                        {% set technologiesKeys = technologies.keys()    -%}
+                        {% do technologiesKeys.sort()                    -%}
+
+
+
+
+                        <tr class="dataline summarySample" id="lineCount{{ length(lineCount) }}">
+                            {% if projectSample == "" %}
+                            <td class="dataCol" col="colCount1">Unique Sample</td>
+                            {% else -%}
+                            <td class="dataCol" col="colCount1">{{ projectSample }}</td>
+                            {% endif %}
+                            <td class="dataCol" col="colCount2"></td>
+                            <td class="dataCol" col="colCount3"></td>
+                            <td class="dataCol" col="colCount4"></td>
+                            {% set colCount = [] -%}
+                            {% for pluginName in g.plugins if checkPlugin(pluginName) -%}
+                            <td class="dataCol" col="colCount{{ length(colCount) + 5 }}">{{ converterPlugin(pluginName) }}</td>
+                                {% set pluginNameShort = pluginName.replace("-", "").replace("_", "").replace(".", "") -%}
+
+                                {% do colCount.append(1) -%}
+
+                                {% for pluginKey in g.plugins[pluginName] if checkPluginKey(pluginName, pluginKey) -%}
+                                    <td class="{{ pluginNameShort }} dataCol" col="colCount{{ length(colCount) + 5 }}">
+                                        {% set statValue = stats(name=projectName, status=projectStatus, sample=projectSample, plugin=pluginName, key=pluginKey) -%}
+                                        {{ converterValue(projectName, None, None, None, None, None, pluginName, pluginKey, statValue)|safe }}
+                                    </td>
+                                    {% do colCount.append(1) -%}
+                                {% endfor -%}
+                            {% endfor -%}
+                        </tr>
+
+
+
+
+                        {% for sequenceTech in technologiesKeys | sort if sequenceTech != none -%}
+                            {% set libs     = technologies[sequenceTech] -%}
+                            {% set libsKeys = libs.keys()                -%}
+                            {% do libsKeys.sort()                        -%}
+
+
+
+                            <tr class="dataline summaryTech" id="lineCount{{ length(lineCount) }}">
+                                <td class="dataCol" col="colCount1"></td>
+                                <td class="dataCol" col="colCount2">{{ sequenceTech }}</td>
+                                <td class="dataCol" col="colCount3"></td>
+                                <td class="dataCol" col="colCount4"></td>
+                                {% set colCount = [] -%}
+                                {% for pluginName in g.plugins if checkPlugin(pluginName) -%}
+                                <td class="dataCol" col="colCount{{ length(colCount) + 5 }}">{{ converterPlugin(pluginName) }}</td>
+                                    {% set pluginNameShort = pluginName.replace("-", "").replace("_", "").replace(".", "") -%}
+
+                                    {% do colCount.append(1) -%}
+
+                                    {% for pluginKey in g.plugins[pluginName] if checkPluginKey(pluginName, pluginKey) -%}
+                                        <td class="{{ pluginNameShort }} dataCol" col="colCount{{ length(colCount) + 5 }}">
+                                            {% set statValue = stats(name=projectName, status=projectStatus, sample=projectSample, tech=sequenceTech, plugin=pluginName, key=pluginKey) -%}
+                                            {{ converterValue(projectName, None, None, None, None, None, pluginName, pluginKey, statValue)|safe }}
+                                        </td>
+                                        {% do colCount.append(1) -%}
+                                    {% endfor -%}
+                                {% endfor -%}
+                            </tr>
+
+
+
+
+                            {% for libraryName in libsKeys | sort if libraryName != none -%}
+                                {% set fileNames     = libs[libraryName]    -%}
+                                {% set fileNamesKeys = fileNames.keys()     -%}
+                                {% do fileNamesKeys.sort()                  -%}
+
+
+
+
+                                <tr class="dataline summaryLib" id="lineCount{{ length(lineCount) }}">
+                                    <td class="dataCol" col="colCount1"></td>
+                                    <td class="dataCol" col="colCount2"></td>
+                                    <td class="dataCol" col="colCount3">{{ libraryName }}</td>
+                                    <td class="dataCol" col="colCount4"></td>
+                                    {% set colCount = [] -%}
+                                    {% for pluginName in g.plugins if checkPlugin(pluginName) -%}
+                                    <td class="dataCol" col="colCount{{ length(colCount) + 5 }}">{{ converterPlugin(pluginName) }}</td>
+                                        {% set pluginNameShort = pluginName.replace("-", "").replace("_", "").replace(".", "") -%}
+
+                                        {% do colCount.append(1) -%}
+
+                                        {% for pluginKey in g.plugins[pluginName] if checkPluginKey(pluginName, pluginKey) -%}
+                                            <td class="{{ pluginNameShort }} dataCol" col="colCount{{ length(colCount) + 5 }}">
+                                                {% set statValue = stats(name=projectName, status=projectStatus, sample=projectSample, tech=sequenceTech, lib=libraryName, plugin=pluginName, key=pluginKey) -%}
+                                                {{ converterValue(projectName, None, None, None, None, None, pluginName, pluginKey, statValue)|safe }}
+                                            </td>
+                                            {% do colCount.append(1) -%}
+                                        {% endfor -%}
+                                    {% endfor -%}
+                                </tr>
+
+
+
+                                {% for fileName in fileNamesKeys | sort if fileName != none -%}
+                                    <tr class="dataline" id="lineCount{{ length(lineCount) }}">
+                                        {% do lineCount.append(1) %}
+                                        <td class="dataCol" col="colCount1"></td>
+                                        <td class="dataCol" col="colCount2"></td>
+                                        <td class="dataCol" col="colCount3"></td>
+                                        <td class="dataCol" col="colCount4">{{ cleanName(fileName) }}</td>
+                                        {% set data     = fileNames[fileName] -%}
+                                        {% set pairName = data.pairName       -%}
+
+
+
+                                        {% set colCount = [] -%}
+                                        {% for pluginName in g.plugins if checkPlugin(pluginName) -%}
+                                            <td class="dataCol" col="colCount{{ length(colCount) + 5 }}">{{ converterPlugin(pluginName) }}</td>
+                                            {% set pluginData      = data.getPlugin(pluginName) -%}
+                                            {% set pluginNameShort = pluginName.replace("-", "").replace("_", "").replace(".", "") -%}
+
+                                            {% do colCount.append(1) -%}
+
+                                            {% for pluginKey in g.plugins[pluginName] if checkPluginKey(pluginName, pluginKey) -%}
+                                                {% set pluginValue = data.getPluginResult(pluginName, pluginKey) -%}
+
+                                                <td class="{{ pluginNameShort }} dataCol" col="colCount{{ length(colCount) + 5 }}">
+                                                    {{ converterValue(projectName, projectStatus, projectSample, sequenceTech, libraryName, fileName, pluginName, pluginKey, pluginValue)|safe }}
+                                                </td>
+                                                {% do colCount.append(1) -%}
+                                            {% endfor -%}
+                                        {% endfor -%}
+                                    </tr>
+                                {% endfor -%}
+                            {% endfor -%}
+                        {% endfor -%}
+                    {% endfor -%}
+                </tbody>
+            </table>
+        </div>
+    {% endfor -%}
+
+    <script>
+        $(document).ready(function(){
+            //HIDE COLUMNS INITIALY
+            $("i").filter(".icon-chevron-left").each(function(data){
+                //console.log('clicking');
+                $(this).trigger('click');
+            });
+
+
+            // HIDE STATUS DIV
+            $('.statusDiv').each(function(data){
+                //console.log('hiding');
+                $(this).hide();
+            });
+        });
+    </script>
+{% endif %}

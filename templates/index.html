@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="cache-control" content="public">
+        <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Visualization of cleaning pipeline results">
+        <meta name="author"      content="Saulo Aflitos">
+        <title>Cleaning Pipeline</title>
+
+        <style>
+            table, table th, table td, .tableContent {
+                white-space : nowrap;
+            }
+
+
+            .statusDiv {
+                clear     : both;
+                /*visibility: hidden;*/
+            }
+
+
+            body {
+                padding-top   : 60px;
+                padding-bottom: 40px;
+            }
+
+
+            #projectNameSelector{
+                color      : #008000;
+                font-size  : large;
+                font-weight: bold;
+            }
+
+
+            .colored {
+                background-color: #89B564;
+            }
+
+
+            thead.header {
+                background-color: #556B2F;
+                color           : #FFFFFF;
+            }
+
+            .summaryStatus{
+                background-color: #89B564;
+            }
+            .summarySample{
+                background-color: #BDD6A9;
+            }
+            .summaryTech{
+                background-color: #B8ED88;
+            }
+            .summaryLib{
+                background-color: #E0F7CC;
+            }
+
+            pre .json        { padding: 5px; margin: 5px; }
+            span.jsonstring  { color: green;      }
+            span.jsonnumber  { color: darkorange; }
+            span.jsonboolean { color: blue;       }
+            span.jsonnull    { color: magenta;    }
+            span.jsonkey     { color: red;        }
+
+            img.icon {
+                width : 20px;
+                height: 20px;
+            }
+            img.srcicon {
+                /*width : 36px;*/
+                height: 36px;
+            }
+        </style>
+    </head>
+
+
+    <body>
+        <div id='graphDiv' style='
+            position  : fixed;
+            top       : 40px;
+            left      : 0px;
+            padding   : 16px;
+            z-index   : 100;
+            display   : inline'>
+        </div>
+    <!--        background: #FFFFFF;
+        border    : 2px solid #2266AA;-->
+        {% block body -%}{% endblock -%}
+
+        {% include 'footer.html' -%}
+    </body>
+</html>

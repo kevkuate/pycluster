@@ -1,0 +1,14 @@
+{
+    "datas": {
+    },
+    "server": {
+        "DEBUG"                 : true,
+        "PORT"                  : 9000,
+        "SECRET_KEY"            : "clusterserver",
+        "BROADCAST_INTERVAL"    : 5,
+        "BROADCAST_PORT"        : 9001,
+        "SLEEP_FOR_BROADCAST"   : 1,
+        "IP_TO_QUERY"           : "8.8.8.8",
+        "SLAVESLEEPTIME"        : 5
+    }
+}

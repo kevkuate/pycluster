@@ -1,0 +1,43 @@
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <div>
+                    <a class="brand" href="#">Pipeline Result Viewer - {{ g.enterprise }}</a>
+                </div>
+                <div>
+                    <ul class="nav nav-tabs" id="myTab">
+                        <select name="project" class="span4" id="projectNameSelector">
+                            <strong>
+                                <option selected value=""></option>
+                            {% for lProjectName in g.structure | sort-%}
+                                <option          value="{{ lProjectName }}">{{ lProjectName }}</option>
+                            {% endfor -%}
+                            </strong>
+                        </select>
+                    </ul>
+                    <ul class="nav nav-tabs" id="myTab">
+                        <button class="statusbtn" id="statusbtnSetup" tgt="projectStatusSetup">Setup</button>
+                    </ul>
+                </div>
+
+                <div class="btn-group pull-right">
+
+                    {% for projectStatus in g.projectStatuses -%}
+                        <ul class="nav nav-tabs" id="myTab">
+                            <button class="statusbtn" id="statusbtn{{ projectStatus }}" tgt="projectStatus{{ projectStatus }}">{{ projectStatus.capitalize() }}</button>
+                        </ul>
+                    {% endfor -%}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="statusDiv" id="projectStatusSetup">
+        <div class="statusDivDiv">
+            <h3>Setup</h3>
+            <strong><a href="configure" target="_blank">Change</a></strong>
+            <!--<pre class="json">-->
+
+            <!--</pre>-->
+        </div>
+    </div>
