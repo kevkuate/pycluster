@@ -11,8 +11,9 @@ import clustertools
 #main views
 class master(object):
     def __init__(self):
-        self.jobs    = jobheap()
-        self.slaves  = {}
+        self.jobs     = jobheap()
+        self.slaves   = {}
+        self.statuses = {} #TODO: IMPLEMENT
 
     def register_slave(self, slaveinfo):
         key = slaveinfo.key()
@@ -26,7 +27,7 @@ class master(object):
             
         self.slaves[ key ] = slaveinfo
     
-    def get_next_command(self, slaveinfo):
+    def get_next_job(self, slaveinfo):
         key = slaveinfo.key()
         
         if key in self.slaves:
@@ -37,21 +38,50 @@ class master(object):
                 
         return None
 
-    def update_node_status(self):
+    def update_node_status(self, slavestatus):
+        #TODO: IMPLEMENT
         pass
     
-    def record_node_result(self):
+    def update_job_status(self, jobstatus):
+        #TODO: IMPLEMENT
+        pass
+    
+    def record_job_result(self, jobresult):
+        #TODO: IMPLEMENT
         pass
 
+
+
+    
+    def add_job( self, jobdata):
+        #TODO: IMPLEMENT
+        pass
+
+
+
+
     # ==== UI API ====
-    def get_all_running_commands(self):
+    def get_all_running_jobs(self):
         return self.jobs.running
     
-    def get_commands_queue(self):
+    def get_jobs_queue(self):
         return self.jobs.queue
     
     def get_slaves(self):
         return self.slaves
+
+    def get_slaves_statuses(self):
+        return self.statuses
+
+
+
+
+
+
+
+
+
+
     
 class slave_hardware_info(object):
     def __init__(self):
@@ -69,7 +99,8 @@ class slave_hardware_status(object):
     def key(self):
         print self.info
         return ( self.info['node'], self.info['ip'] )
-    
+
+
 class slave(object):
     def __init__(self):
         self.requester      = clustertools.requests
@@ -91,10 +122,10 @@ class slave(object):
             self.slave_register_node_info_in_master()
         
         if self.isbusy:
-            self.slave_send_run_status_to_master()
+            self.slave_send_job_status_to_master()
             
         else:
-            self.slave_get_command()
+            self.slave_get_job()
 
         self.slave_send_node_status_to_master()
 
@@ -112,9 +143,9 @@ class slave(object):
             print "MASTER ADDRESS: '%s'" % self.masteraddr
 
 
-    def slave_get_command(self): # every minute when free
+    def slave_get_job(self): # every minute when free
         payload  = jsonpickle.encode( self.computerinfo )
-        postaddr = self.masteraddr + '/getcommand'
+        postaddr = self.masteraddr + '/getjob'
         #print "POST ADDRESS: '%s'" % postaddr
         hasadded = False
         
@@ -123,13 +154,13 @@ class slave(object):
             #print "GETTING COMMAND: '%d' val '%s'" % ( res.status_code, res.text )
             
             if res.status_code == 200:
-                print "SUCCESS GETTING COMMAND TEXT:",res.text
+                print "SUCCESS GETTING JOB TEXT:", res.text
                 hasadded = True
-                cmddata  = jsonpickle.decode( res.text )
-                print "SUCCESS GETTING COMMAND DATA:",cmddata
-                self.current_run = cmddata
+                jobdata  = jsonpickle.decode( res.text )
+                print "SUCCESS GETTING JOB DATA:", jobdata
+                self.current_run = jobdata
                 
-                if cmddata is not None:
+                if jobdata is not None:
                     self.isbusy = True
                 
                 #TODO: RUN COMMAND
@@ -139,6 +170,7 @@ class slave(object):
                 print "FAILED GETTING COMMAND"
                 time.sleep(1)
 
+        #TODO: RUN JOB
         
         pass
         #from MASTER, get:
@@ -231,7 +263,7 @@ class slave(object):
                 time.sleep(1)
     
     
-    def slave_send_run_status_to_master(self):
+    def slave_send_job_status_to_master(self):
         payload = jsonpickle.encode( self.current_run )
         putaddr = self.masteraddr + '/updaterunstatus'
         print "PUT ADDRESS: '%s'" % putaddr
@@ -250,9 +282,10 @@ class slave(object):
                 time.sleep(1)
 
 
-    def slave_send_command_result_to_master(self): # on completion
+    def slave_send_job_result_to_master(self): # on completion
         self.curruid        = uuid.uuid1().hex
         self.computerinfo.info['uid'] = self.curruid
+        #TODO: IMPLEMENT
         #send
         #    command
         #    owner

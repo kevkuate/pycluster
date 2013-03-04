@@ -142,46 +142,60 @@ def master_register_node():
     
     return 'OK'
 
-@app.route("/getcommand", methods=['POST'])
-def master_get_next_command():
-    #print "SERVER GETTING NEXT COMMAND DATA:",request.data
+@app.route("/getjob", methods=['POST'])
+def master_get_next_job():
+    #print "SERVER GETTING NEXT JOB DATA:",request.data
     nodeinfo = jsonpickle.decode( request.data )
-    #print "SERVER GETTING NEXT COMMAND INFO:",nodeinfo
-    return jsonpickle.encode( server.get_next_command( nodeinfo ) )
+    #print "SERVER GETTING NEXT JOB INFO:",nodeinfo
+    return jsonpickle.encode( server.get_next_job( nodeinfo ) )
 
 @app.route("/updatenodestatus", methods=['PUT'])
 def master_update_node_status():
     nodestatus = jsonpickle.decode( request.data )
+    server.update_node_status(nodestatus)
     return 'OK'
 
-@app.route("/updaterunstatus", methods=['PUT'])
-def master_update_run_status():
-    runstatus = jsonpickle.decode( request.data )
-    print runstatus
+@app.route("/updatejobstatus", methods=['PUT'])
+def master_update_job_status():
+    jobstatus = jsonpickle.decode( request.data )
+    server.update_job_status( jobstatus )
     return 'OK'
 
-@app.route("/recordresult", methods=['PUT'])
-def master_record_node_result():    
-    pass
+@app.route("/recordjobresult", methods=['PUT'])
+def master_record_job_result():    
+    jobresult = jsonpickle.decode( request.data )
+    server.record_job_result( jobresult )
+    return 'OK'
+
+@app.route("/addjob", methods=['PUT'])
+def master_add_job():    
+    jobdata = jsonpickle.decode( request.data )
+    server.add_job( jobdata )
+    return 'OK'
 
 
 
 
 # ==== UI API ====
-@app.route("/getcommands", methods=['GET'])
-def master_get_all_running_commands():
-    return jsonpickle.encode( server.get_all_running_commands() )
+@app.route("/getjobs", methods=['GET'])
+def master_get_all_running_jobs():
+    return jsonpickle.encode( server.get_all_running_jobs() )
 
-@app.route("/getcommandsqueue", methods=['GET'])
-def master_get_commands_queue():
-    return jsonpickle.encode( server.get_commands_queue() )
+@app.route("/getjobsqueue", methods=['GET'])
+def master_get_jobs_queue():
+    return jsonpickle.encode( server.get_jobs_queue() )
 
 @app.route("/getslaves", methods=['GET'])
 def master_get_slaves():
     return jsonpickle.encode( server.get_slaves() )
     #return
     #    list (ip, name, desc, status)
-    
+
+@app.route("/getslavesstatuses", methods=['GET'])
+def master_get_slaves():
+    return jsonpickle.encode( server.get_slaves_statuses() )
+    #return
+    #    list (ip, name, desc, status)    
 #                qry = (pluginName, pluginKey, imageName)
 #                if qry in graph_mapper:
 #                    func, func_name, func_nfo = graph_mapper[ qry ]
@@ -204,6 +218,23 @@ def master_get_slaves():
 
 
 
+
+@app.route("/options", methods=['OPTIONS'])
+def master_get_options():
+    return jsonpickle.encode( {
+                                "/registernode"     : "by sending node's info. registers it as a working node",
+                                "/getjob"           : "here a node, by sending its info, gets the next job which suits it",
+                                "/updatenodestatus" : "updates the node current status",
+                                "/updatejobstatus"  : "updates the job current status",
+                                "/recordjobresult"  : "record job result",
+                                 
+                                "/addjob"           : "add a job to queue",
+                                
+                                "/getjobs"          : "gets a list of all running jobs",
+                                "/getjobsqueue"     : "gets a list of all jobs in the queue",
+                                "/getslaves"        : "gets a list of all slave nodes",
+                                "/getslavesstatuses": "gets a list of all slaves statuses"
+                               } )
 
 
 def main():
