@@ -131,15 +131,8 @@ def init_classes_loader():
 @app.route("/registernode", methods=['PUT'])
 def master_register_node():
     print "registering node"
-    #print "data: %s" % request.data
-    
     serverinfo = jsonpickle.decode( request.data )
-    
-    #for key in serverinfo:
-    #    print "  %s: %s" % (key, serverinfo[key])
-    
     server.register_slave( serverinfo )
-    
     return 'OK'
 
 @app.route("/getjob", methods=['POST'])
@@ -192,7 +185,7 @@ def master_get_slaves():
     #    list (ip, name, desc, status)
 
 @app.route("/getslavesstatuses", methods=['GET'])
-def master_get_slaves():
+def master_get_slaves_statuses():
     return jsonpickle.encode( server.get_slaves_statuses() )
     #return
     #    list (ip, name, desc, status)    

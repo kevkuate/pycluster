@@ -39,7 +39,10 @@ class master(object):
         return None
 
     def update_node_status(self, slavestatus):
-        #TODO: IMPLEMENT
+        key = slavestatus.key()
+        
+        self.statuses[key] = slavestatus
+        
         pass
     
     def update_job_status(self, jobstatus):
@@ -85,20 +88,28 @@ class master(object):
     
 class slave_hardware_info(object):
     def __init__(self):
-        self.info = clustertools.get_computer_info()
+        self.info = None
+        
+    def update(self, uid):
+        self.info        = clustertools.get_computer_info()
+        self.info['uid'] = uid
 
     def key(self):
-        print self.info
+        #print self.info
         return ( self.info['node'], self.info['ip'] )
     
 
 class slave_hardware_status(object):
     def __init__(self):
-        self.status = clustertools.get_computer_status()
+        self.status = None
+        
+    def update(self, uid):
+        self.status        = clustertools.get_computer_status()
+        self.status['uid'] = uid
     
     def key(self):
-        print self.info
-        return ( self.info['node'], self.info['ip'] )
+        print self.status
+        return ( self.status['node'], self.status['ip'] )
 
 
 class slave(object):
@@ -113,10 +124,14 @@ class slave(object):
         self.current_run    = None
         self.timercount     = 0
         self.curruid        = uuid.uuid1().hex
-        self.computerinfo.info['uid'] = self.curruid
+        self.computerinfo.update(   self.curruid )
+        self.computerstatus.update( self.curruid )
     
     
     def go(self):
+        self.computerinfo.update(   self.curruid )
+        self.computerstatus.update( self.curruid )
+        
         if self.timercount == 10 or self.timercount == 0:
             self.timercount = 0
             self.slave_register_node_info_in_master()
@@ -209,6 +224,7 @@ class slave(object):
     
     
     def slave_register_node_info_in_master(self): # every min if not registered
+        self.computerinfo.update( self.curruid )
         payload = jsonpickle.encode( self.computerinfo )
         putaddr = self.masteraddr + '/registernode'
         print "PUT ADDRESS: '%s'" % putaddr
@@ -284,7 +300,8 @@ class slave(object):
 
     def slave_send_job_result_to_master(self): # on completion
         self.curruid        = uuid.uuid1().hex
-        self.computerinfo.info['uid'] = self.curruid
+        self.computerinfo.update(   self.curruid )
+        self.computerstatus.update( self.curruid )
         #TODO: IMPLEMENT
         #send
         #    command

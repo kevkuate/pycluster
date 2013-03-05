@@ -110,19 +110,27 @@ def get_computer_info():
     info['release'  ] = platform.release()
     info['system'   ] = platform.system()
     info['version'  ] = platform.version()
-    info['uname'    ] = platform.uname()
+    info['uname'    ] = list( platform.uname() )
 
     info['phymem'   ] = psutil.TOTAL_PHYMEM
+    #print "PHYMEM",info['phymem'   ]
     info['numcpus'  ] = psutil.NUM_CPUS
+    #print "NUMCPUS",info['numcpus'   ]
     info['boottime' ] = psutil.BOOT_TIME
+    #print "boottime",info['boottime'   ]
 
 
+    mem    = dict( psutil.virtual_memory()._asdict() )
+    #MEM vmem(total=541062549504L, available=509759660032L, percent=5.8, used=537785815040L, free=3276734464L, active=252187430912, inactive=270852608000, buffers=265891840L, cached=506217033728)
 
-    mem = psutil.virtual_memory()
+    #print "MEM", mem
     info['mem'      ] = mem
     
-    disk_par = psutil.disk_partitions()
-    disk_use = []
+    disk_par = [ dict( x._asdict() ) for x in psutil.disk_partitions() ]
+    #DISK PAR [partition(device='/dev/sdc1', mountpoint='/', fstype='ext4', opts='rw,errors=remount-ro'), partition(device='/dev/sde1', mountpoint='/tmp', fstype='ext4', opts='rw,noexec,noatime,nodiratime,data=writeback,user_xattr,discard,errors=remount-ro'), partition(device='/dev/sdd', mountpoint='/home', fstype='xfs', opts='rw'), partition(device='/dev/sdf1', mountpoint='/mnt/usbdisk', fstype='ext3', opts='rw')]
+
+    #print "DISK PAR", disk_par
+    #disk_use = []
     #print disk_par
     
     #for diskinfo in disk_par:
@@ -146,12 +154,12 @@ def get_computer_info():
         for line in cpui:
             if len( line.strip() ) == 0:
                 #print "empty"
-                info['cpu'].append({})
+                #info['cpu'].append({})
                 break
                 #continue
                 
             #print line
-            lined = line.strip().split(":")
+            lined = line.split(":")
             #print lined
             
             key   = lined[0].strip()
@@ -180,16 +188,22 @@ def get_computer_status():
 
     info['node'     ] = platform.node()
 
-    mem = psutil.virtual_memory()
+    mem    = dict( psutil.virtual_memory()._asdict() )
     info['mem'      ] = mem
 
-    cpu = psutil.cpu_times()
+    cpu = dict( psutil.cpu_times()._asdict() )
+    #print 'CPUTIMES',cpu
+    #CPUTIMES cputimes(user=62689782.9, nice=93151145.39, system=22271807.77, idle=566157980.08, iowait=4968593.72, irq=361.33, softirq=335397.3)
     info['cpu'      ] = cpu
 
-    diskio = psutil.disk_io_counters()
+    diskio = dict( psutil.disk_io_counters()._asdict() )
+    #print 'DISKIO',diskio
+    #DISKIO iostat(read_count=35585873, write_count=406747250, read_bytes=1035986098176, write_bytes=9580786204672, read_time=139900140, write_time=3134090016)
     info['diskio'   ] = diskio
 
-    networ = psutil.network_io_counters()
+    networ = dict( psutil.network_io_counters()._asdict() )
+    #print 'NETWORK',networ
+    #NETWORK iostat(bytes_sent=97209063096846, bytes_recv=150039388543743, packets_sent=27229809239, packets_recv=32487716231, errin=0, errout=0, dropin=0, dropout=0)
     info['network'  ] = networ
     
     info['curr_time'] = time.time()
